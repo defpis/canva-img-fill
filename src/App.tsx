@@ -151,7 +151,7 @@ export function App() {
 
           setImg(newImg);
         }}
-        onResize2={(oldState, newState, mode) => {
+        onResize2={(newState, mode) => {
           if (mode === "resize-l") {
             if (newState.x < img.x) {
               const delta = newImg.x - newState.x;

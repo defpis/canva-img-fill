@@ -30,11 +30,7 @@ export default function Box({
   innerBox?: Position & Size;
   onMove?: (dx: number, dy: number) => void;
   onResize?: (dx: number, dy: number, scale: number) => void;
-  onResize2?: (
-    oldState: Position & Size,
-    newState: Position & Size,
-    mode: string
-  ) => void;
+  onResize2?: (newState: Position & Size, mode: string) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -522,7 +518,7 @@ export default function Box({
             onResize2 ? undefined : aspectRef.current
           );
           if (first) {
-            onResize2?.(prev, newState, mode);
+            onResize2?.(newState, mode);
             first = false;
           }
         } else if (mode === "resize-t") {
@@ -533,7 +529,7 @@ export default function Box({
             onResize2 ? undefined : aspectRef.current
           );
           if (first) {
-            onResize2?.(prev, newState, mode);
+            onResize2?.(newState, mode);
             first = false;
           }
         } else if (mode === "resize-r") {
@@ -544,7 +540,7 @@ export default function Box({
             onResize2 ? undefined : aspectRef.current
           );
           if (first) {
-            onResize2?.(prev, newState, mode);
+            onResize2?.(newState, mode);
             first = false;
           }
         } else if (mode === "resize-b") {
@@ -555,7 +551,7 @@ export default function Box({
             onResize2 ? undefined : aspectRef.current
           );
           if (first) {
-            onResize2?.(prev, newState, mode);
+            onResize2?.(newState, mode);
             first = false;
           }
         }
