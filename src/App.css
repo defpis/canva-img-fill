@@ -1,0 +1,8 @@
+#root {
+  ---box-margin: 20px;
+  height: calc(100% - 2 * var(---box-margin));
+  position: relative;
+  overflow: hidden;
+  margin: var(---box-margin);
+  border: 1px solid #000;
+}
