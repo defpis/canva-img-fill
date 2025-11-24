@@ -21,6 +21,7 @@ export default function Box({
   onMove,
   onResize,
   onResize2,
+  onStart,
 }: {
   children?: React.ReactNode;
   aspect?: number;
@@ -31,6 +32,7 @@ export default function Box({
   onMove?: (dx: number, dy: number) => void;
   onResize?: (dx: number, dy: number, scale: number) => void;
   onResize2?: (newState: Position & Size, mode: string) => void;
+  onStart?: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +40,7 @@ export default function Box({
   const onMoveRef = useRef(onMove);
   const onResizeRef = useRef(onResize);
   const onResize2Ref = useRef(onResize2);
+  const onStartRef = useRef(onStart);
   const aspectRef = useRef(aspect);
   const innerBoxRef = useRef(innerBox);
 
@@ -46,6 +49,7 @@ export default function Box({
     onMoveRef.current = onMove;
     onResizeRef.current = onResize;
     onResize2Ref.current = onResize2;
+    onStartRef.current = onStart;
     aspectRef.current = aspect;
     innerBoxRef.current = innerBox;
   });
@@ -100,6 +104,8 @@ export default function Box({
 
         lastX = startEvent.clientX;
         lastY = startEvent.clientY;
+
+        onStartRef.current?.();
 
         return mouseMove$.pipe(
           map((moveEvent) => {

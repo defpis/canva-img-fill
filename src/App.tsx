@@ -74,6 +74,8 @@ export function App() {
   newImg.x += scale.dx;
   newImg.y += scale.dy;
 
+  const [startBox, setStartBox] = useState<Position & Size>({ ...newImg });
+
   return (
     <div
       style={{ height: "100%" }}
@@ -151,9 +153,13 @@ export function App() {
 
           setImg(newImg);
         }}
+        onStart={() => {
+          setStartBox({ ...newImg });
+        }}
         onResize2={(newState, mode) => {
           if (mode === "resize-l") {
-            if (newState.x < img.x) {
+            console.log("resize-l", newState, startBox);
+            if (newState.x < startBox.x) {
               const delta = newImg.x - newState.x;
               const ratio = newState.width / (newState.width - delta);
 
@@ -168,32 +174,32 @@ export function App() {
               };
 
               // 需要考虑四个方向的覆盖
-              const topOffset = newImg.y - scaleCenter.y;
-              const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
-              const leftOffset = newImg.x - scaleCenter.x;
-              const rightOffset = newImg.x + newImg.width - scaleCenter.x;
+              // const topOffset = newImg.y - scaleCenter.y;
+              // const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
+              // const leftOffset = newImg.x - scaleCenter.x;
+              // const rightOffset = newImg.x + newImg.width - scaleCenter.x;
 
-              let minRatioForCoverage = 0;
-              if (topOffset !== 0) {
-                const r1 = (newState.y - scaleCenter.y) / topOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r1);
-              }
-              if (bottomOffset !== 0) {
-                const r2 =
-                  (newState.y + newState.height - scaleCenter.y) / bottomOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r2);
-              }
-              if (leftOffset !== 0) {
-                const r3 = (newState.x - scaleCenter.x) / leftOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r3);
-              }
-              if (rightOffset !== 0) {
-                const r4 =
-                  (newState.x + newState.width - scaleCenter.x) / rightOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r4);
-              }
+              // let minRatioForCoverage = 0;
+              // if (topOffset !== 0) {
+              //   const r1 = (newState.y - scaleCenter.y) / topOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r1);
+              // }
+              // if (bottomOffset !== 0) {
+              //   const r2 =
+              //     (newState.y + newState.height - scaleCenter.y) / bottomOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r2);
+              // }
+              // if (leftOffset !== 0) {
+              //   const r3 = (newState.x - scaleCenter.x) / leftOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r3);
+              // }
+              // if (rightOffset !== 0) {
+              //   const r4 =
+              //     (newState.x + newState.width - scaleCenter.x) / rightOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r4);
+              // }
 
-              const finalRatio = Math.max(ratio, minRatioForCoverage);
+              const finalRatio = ratio;
 
               const offsetX = imgCenter.x - scaleCenter.x;
               const offsetY = imgCenter.y - scaleCenter.y;
@@ -213,7 +219,8 @@ export function App() {
               }));
             }
           } else if (mode === "resize-r") {
-            if (newState.x + newState.width > img.x + img.width) {
+            console.log("resize-r", newState, startBox);
+            if (newState.x + newState.width > startBox.x + startBox.width) {
               const delta =
                 newState.x + newState.width - (newImg.x + newImg.width);
               const ratio = newState.width / (newState.width - delta);
@@ -228,32 +235,32 @@ export function App() {
                 y: newImg.y + newImg.height / 2,
               };
 
-              const topOffset = newImg.y - scaleCenter.y;
-              const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
-              const leftOffset = newImg.x - scaleCenter.x;
-              const rightOffset = newImg.x + newImg.width - scaleCenter.x;
+              // const topOffset = newImg.y - scaleCenter.y;
+              // const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
+              // const leftOffset = newImg.x - scaleCenter.x;
+              // const rightOffset = newImg.x + newImg.width - scaleCenter.x;
 
-              let minRatioForCoverage = 0;
-              if (topOffset !== 0) {
-                const r1 = (newState.y - scaleCenter.y) / topOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r1);
-              }
-              if (bottomOffset !== 0) {
-                const r2 =
-                  (newState.y + newState.height - scaleCenter.y) / bottomOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r2);
-              }
-              if (leftOffset !== 0) {
-                const r3 = (newState.x - scaleCenter.x) / leftOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r3);
-              }
-              if (rightOffset !== 0) {
-                const r4 =
-                  (newState.x + newState.width - scaleCenter.x) / rightOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r4);
-              }
+              // let minRatioForCoverage = 0;
+              // if (topOffset !== 0) {
+              //   const r1 = (newState.y - scaleCenter.y) / topOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r1);
+              // }
+              // if (bottomOffset !== 0) {
+              //   const r2 =
+              //     (newState.y + newState.height - scaleCenter.y) / bottomOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r2);
+              // }
+              // if (leftOffset !== 0) {
+              //   const r3 = (newState.x - scaleCenter.x) / leftOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r3);
+              // }
+              // if (rightOffset !== 0) {
+              //   const r4 =
+              //     (newState.x + newState.width - scaleCenter.x) / rightOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r4);
+              // }
 
-              const finalRatio = Math.max(ratio, minRatioForCoverage);
+              const finalRatio = ratio;
 
               const offsetX = imgCenter.x - scaleCenter.x;
               const offsetY = imgCenter.y - scaleCenter.y;
@@ -273,7 +280,7 @@ export function App() {
               }));
             }
           } else if (mode === "resize-t") {
-            if (newState.y < img.y) {
+            if (newState.y < startBox.y) {
               const delta = newImg.y - newState.y;
               const ratio = newState.height / (newState.height - delta);
 
@@ -287,32 +294,32 @@ export function App() {
                 y: newImg.y + newImg.height / 2,
               };
 
-              const topOffset = newImg.y - scaleCenter.y;
-              const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
-              const leftOffset = newImg.x - scaleCenter.x;
-              const rightOffset = newImg.x + newImg.width - scaleCenter.x;
+              // const topOffset = newImg.y - scaleCenter.y;
+              // const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
+              // const leftOffset = newImg.x - scaleCenter.x;
+              // const rightOffset = newImg.x + newImg.width - scaleCenter.x;
 
-              let minRatioForCoverage = 0;
-              if (topOffset !== 0) {
-                const r1 = (newState.y - scaleCenter.y) / topOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r1);
-              }
-              if (bottomOffset !== 0) {
-                const r2 =
-                  (newState.y + newState.height - scaleCenter.y) / bottomOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r2);
-              }
-              if (leftOffset !== 0) {
-                const r3 = (newState.x - scaleCenter.x) / leftOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r3);
-              }
-              if (rightOffset !== 0) {
-                const r4 =
-                  (newState.x + newState.width - scaleCenter.x) / rightOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r4);
-              }
+              // let minRatioForCoverage = 0;
+              // if (topOffset !== 0) {
+              //   const r1 = (newState.y - scaleCenter.y) / topOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r1);
+              // }
+              // if (bottomOffset !== 0) {
+              //   const r2 =
+              //     (newState.y + newState.height - scaleCenter.y) / bottomOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r2);
+              // }
+              // if (leftOffset !== 0) {
+              //   const r3 = (newState.x - scaleCenter.x) / leftOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r3);
+              // }
+              // if (rightOffset !== 0) {
+              //   const r4 =
+              //     (newState.x + newState.width - scaleCenter.x) / rightOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r4);
+              // }
 
-              const finalRatio = Math.max(ratio, minRatioForCoverage);
+              const finalRatio = ratio;
 
               const offsetX = imgCenter.x - scaleCenter.x;
               const offsetY = imgCenter.y - scaleCenter.y;
@@ -332,7 +339,7 @@ export function App() {
               }));
             }
           } else if (mode === "resize-b") {
-            if (newState.y + newState.height > img.y + img.height) {
+            if (newState.y + newState.height > startBox.y + startBox.height) {
               const delta =
                 newState.y + newState.height - (newImg.y + newImg.height);
               const ratio = newState.height / (newState.height - delta);
@@ -347,32 +354,32 @@ export function App() {
                 y: newImg.y + newImg.height / 2,
               };
 
-              const topOffset = newImg.y - scaleCenter.y;
-              const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
-              const leftOffset = newImg.x - scaleCenter.x;
-              const rightOffset = newImg.x + newImg.width - scaleCenter.x;
+              // const topOffset = newImg.y - scaleCenter.y;
+              // const bottomOffset = newImg.y + newImg.height - scaleCenter.y;
+              // const leftOffset = newImg.x - scaleCenter.x;
+              // const rightOffset = newImg.x + newImg.width - scaleCenter.x;
 
-              let minRatioForCoverage = 0;
-              if (topOffset !== 0) {
-                const r1 = (newState.y - scaleCenter.y) / topOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r1);
-              }
-              if (bottomOffset !== 0) {
-                const r2 =
-                  (newState.y + newState.height - scaleCenter.y) / bottomOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r2);
-              }
-              if (leftOffset !== 0) {
-                const r3 = (newState.x - scaleCenter.x) / leftOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r3);
-              }
-              if (rightOffset !== 0) {
-                const r4 =
-                  (newState.x + newState.width - scaleCenter.x) / rightOffset;
-                minRatioForCoverage = Math.max(minRatioForCoverage, r4);
-              }
+              // let minRatioForCoverage = 0;
+              // if (topOffset !== 0) {
+              //   const r1 = (newState.y - scaleCenter.y) / topOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r1);
+              // }
+              // if (bottomOffset !== 0) {
+              //   const r2 =
+              //     (newState.y + newState.height - scaleCenter.y) / bottomOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r2);
+              // }
+              // if (leftOffset !== 0) {
+              //   const r3 = (newState.x - scaleCenter.x) / leftOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r3);
+              // }
+              // if (rightOffset !== 0) {
+              //   const r4 =
+              //     (newState.x + newState.width - scaleCenter.x) / rightOffset;
+              //   minRatioForCoverage = Math.max(minRatioForCoverage, r4);
+              // }
 
-              const finalRatio = Math.max(ratio, minRatioForCoverage);
+              const finalRatio = ratio;
 
               const offsetX = imgCenter.x - scaleCenter.x;
               const offsetY = imgCenter.y - scaleCenter.y;
